@@ -1,0 +1,114 @@
+TASK 3: EXPENSE TRACKER
+Intern ID- CC66711
+Designation- Web Development Intern
+Batch- October 2023
+==========================================================================================================================
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Expense Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #expense-form {
+            text-align: center;
+        }
+
+        #expense-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .expense-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .expense-item button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .expense-total {
+            text-align: right;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Expense Tracker</h1>
+        <form id="expense-form">
+            <label for="expense-description">Description:</label>
+            <input type="text" id="expense-description" required>
+            <label for="expense-amount">Amount:</label>
+            <input type="number" id="expense-amount" required>
+            <button type="submit">Add Expense</button>
+        </form>
+        <ul id="expense-list"></ul>
+        <p class="expense-total">Total: $<span id="total-expense">0</span></p>
+    </div>
+
+    <script>
+        const expenseForm = document.getElementById('expense-form');
+        const expenseList = document.getElementById('expense-list');
+        const totalExpense = document.getElementById('total-expense');
+
+        expenseForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const description = document.getElementById('expense-description').value;
+            const amount = parseFloat(document.getElementById('expense-amount').value);
+
+            if (description && !isNaN(amount)) {
+                const expenseItem = document.createElement('li');
+                expenseItem.classList.add('expense-item');
+                expenseItem.innerHTML = `
+                    <span>${description}</span>
+                    <span>$${amount.toFixed(2)}</span>
+                    <button onclick="removeExpense(this)">Remove</button>
+                `;
+
+                expenseList.appendChild(expenseItem);
+
+                const currentTotal = parseFloat(totalExpense.innerText);
+                totalExpense.innerText = (currentTotal + amount).toFixed(2);
+
+                // Clear input fields
+                document.getElementById('expense-description').value = '';
+                document.getElementById('expense-amount').value = '';
+            }
+        });
+
+        function removeExpense(button) {
+            const expenseItem = button.parentElement;
+            const amount = parseFloat(expenseItem.children[1].innerText.substr(1));
+            const currentTotal = parseFloat(totalExpense.innerText);
+            totalExpense.innerText = (currentTotal - amount).toFixed(2);
+
+            expenseItem.remove();
+        }
+    </script>
+</body>
+</html>
